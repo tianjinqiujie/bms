@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图书管理系统</title>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+</head>
+<body>
+<h3>作者信息卡</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title">修改作者</h3>
+                </div>
+                <div class="panel-body">
+                    <form action="{% url 'edit_author' author_obj.id %}" method="post" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="">姓名</label>
+                            <input type="text" name="name" class="form-control" value="{{ author_obj.name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="">作品</label>
+                            <select multiple name="books" class="form-control">
+                                {% for book in book_list %}
+                                    {% if book in author_obj.book_set.all %}
+                                        <option selected value="{{ book.id }}">{{ book.title }}</option>
+                                    {% else %}
+                                        <option value="{{ book.id }}">{{ book.title }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">年龄</label>
+                            <input type="text" name="age" class="form-control" value="{{ author_obj.age }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="">电话</label>
+                            <input type="text" name="phone" class="form-control" value="{{ author_obj.phone }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="">地址</label>
+                            <input type="text" name="address" class="form-control" value="{{ author_obj.detail.address }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="">邮箱</label>
+                            <input type="email" name="email1" class="form-control" value="{{ author_obj.detail.author_email }}">
+                        </div>
+                        <input type="submit" class="btn btn-default pull-right btn-success" value="提交">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

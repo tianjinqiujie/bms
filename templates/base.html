@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图书管理系统</title>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/dashboard.css">
+    <link rel="stylesheet" href="/static/sweetalert/sweetalert.css">
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/book_list/">图书管理系统</a>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/book_list/">欢迎用户：{{ request.session.name }}</a></li>
+                <li><a href="/book_list/">上次登陆时间：{{ request.session.login_time|default:'第一次登陆' }}</a></li>
+                <li><a href="/logout/">注销</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="{% block pu %}{% endblock %}"><a href="{% url 'publisher_list' %}">出版社列表页</a></li>
+                <li class="{% block bo %}{% endblock %}"><a href="{% url 'book_list' %}">书籍列表</a></li>
+                <li class="{% block au %}{% endblock %}"><a href="{% url 'author_list' %}">作者列表</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">管理页面</h1>
+            <div class="panel panel-primary">
+                {% block page-main %}
+                {% endblock %}
+                <nav aria-label="Page navigation" class="text-right">
+                    <ul class="pagination">
+                        {{ page_html|safe }}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/sweetalert/sweetalert.min.js"></script>
+<script src="/static/jquery-3.3.1.js"></script>
+<script src="/static/setupajax.js"></script>
+{% block p %}
+{% endblock %}
+{% block b %}
+{% endblock %}
+{% block a %}
+{% endblock %}
+</body>
+</html>

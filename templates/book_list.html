@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block page-main %}
+    <div class="panel-heading">书籍列表 <i class="fa fa-thumb-tack pull-right"></i></div>
+    <div class="panel-body">
+        <div class="row" style="margin-bottom: 15px">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">搜索</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-md-4 -->
+            <div class="col-md-3 pull-right">
+                <a href="{% url 'add_book' %}" class="btn btn-success pull-right"><i class="fa fa-plus fa-fw"></i>添加新书籍</a>
+            </div>
+        </div><!-- /.row -->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th style="display: none;">id</th>
+                <th>书名</th>
+                <th>出版日期</th>
+                <th>价格</th>
+                <th>介绍</th>
+                <th>出版社</th>
+                <th>作者</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in book_list %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td style="display: none;">{{ book.id }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.publish_date|date:'Y-m-d' }}</td>
+                    <td>{{ book.price }}</td>
+                    <td>{{ book.memo }}</td>
+                    <td>{{ book.publisher.name }}</td>
+                    <td>{% for author_obj in book.authors.all %}
+                        {{ author_obj.name }}
+                    {% endfor %}
+                    </td>
+                    <td>
+                        <a class="btn btn-danger del_bo" href="javascript:void(0)" id="{{ book.id }}"><i class="fa fa-trash-o fa-fw"></i>删除</a>
+                        <a class="btn btn-info" href="{% url 'edit_book' book.id %}/"><i class="fa fa-pencil fa-fw"></i>编辑</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">暂时没有数据~</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block bo %}
+    active
+{% endblock %}
+{% block b %}
+    <script>
+        $('.del_bo').on('click',function () {
+            var $delb = $(this).parent().parent();
+            var del_id = $(this).attr('id');
+            swal({
+                    title: "你确定要删除吗？",
+                    text: "一旦删除就找不回来了",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-warning",
+                    confirmButtonText: "确认",
+                    cancelButtonText: "取消",
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: false
+                },
+                function () {
+                    $.ajax({
+                        url:"/delete_book/"+del_id+'/',
+                        type:'post',
+                        success:function (arg) {
+                            if(arg === 'a') {
+                                location.href="/login/"
+                            }else {
+                                swal(arg, '删除成功!', 'success');
+                                $delb.remove()
+                            }
+                        }
+                    });
+                });
+        })
+    </script>
+{% endblock %}
