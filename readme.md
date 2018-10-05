@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 ## 效果
 
-![](https://github.com/tianjinqiujie/bms/blob/master/Screenshots/1.png)
+![](https://github.com/tianjinqiujie/bms/blob/dev/Screenshots/1.png)
 
-![](https://github.com/tianjinqiujie/bms/blob/master/Screenshots/2.png)
+![](https://github.com/tianjinqiujie/bms/blob/dev/Screenshots/2.png)
 
